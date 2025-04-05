@@ -1,0 +1,21 @@
+const catchAsync = require("../utils/catchAsync");
+
+const createProject = catchAsync(async (req, res, next) =>{
+  const body = req.body;
+
+  const newProject = await project.create ({
+    title:body.title,
+    isFeatured: body.isFeatured,
+    productImage: body.shortDescription,
+    description: body.description,
+    productUrl: body.productUrl,
+    category: body.category,
+    tags: body.tags,
+    createdBy: 1,
+  });
+
+  return res.status(201).json({
+    status: 'success',
+    data: newProject,
+  })
+});
