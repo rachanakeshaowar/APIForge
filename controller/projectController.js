@@ -1,12 +1,14 @@
+const project = require("../db/models/project");
 const catchAsync = require("../utils/catchAsync");
 
 const createProject = catchAsync(async (req, res, next) =>{
   const body = req.body;
 
   const newProject = await project.create ({
-    title:body.title,
-    isFeatured: body.isFeatured,
-    productImage: body.shortDescription,
+    title: body.title,
+    productImage: body.productImage,
+    price: body.price,
+    shortDescription: body.shortDescription,
     description: body.description,
     productUrl: body.productUrl,
     category: body.category,
@@ -19,3 +21,5 @@ const createProject = catchAsync(async (req, res, next) =>{
     data: newProject,
   })
 });
+
+module.exports = {createProject};
