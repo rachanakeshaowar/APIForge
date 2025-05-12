@@ -31,49 +31,19 @@ const signup = catchAsync(async (req, res, next) => {
     if (!newUser) {
         return next(new AppError('Failed to create the user', 400));
     }
-  if (body.password !== body.confirmPassword) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Passwords do not match',
-    });
-  }
+const result = newUser.toJSON();
 
-  try {
-    const hashedPassword = await bcrypt.hash(body.password, 12);
-
-    const newUser = await user.create({
-      userType: body.userType,
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-      password: hashedPassword,
-    });
-
-    if(!newUser){
-      return next(new AppError('Failed to create the user',400));
-      
-    }
-    const result = newUser.toJSON();
-  
     delete result.password;
-    delete result.deleteAt;
+    delete result.deletedAt;
 
-    result.token = generateToken({ 
-      id: result.id });
+    result.token = generateToken({
+        id: result.id,
+    });
 
     return res.status(201).json({
-      status: 'success',
-      data: result,
+        status: 'success',
+        data: result,
     });
-
-  } catch (err) {
-    console.error('Signup Error:', err);
-    return res.status(500).json({
-      status: 'error',
-      message: 'Internal server error',
-      error: err.message,
-    });
-  }
 });
 
 // 🔐 Login Function (Now outside the signup)
