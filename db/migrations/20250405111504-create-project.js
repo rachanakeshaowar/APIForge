@@ -33,6 +33,12 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+      category: {
+                type: Sequelize.ARRAY(Sequelize.STRING),
+            },
+            tags: {
+                type: Sequelize.ARRAY(Sequelize.STRING),
+            },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
