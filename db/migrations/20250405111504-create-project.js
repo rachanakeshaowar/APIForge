@@ -30,15 +30,23 @@ module.exports = {
         allowNull: false,
       },
       productUrl: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       category: {
-                type: Sequelize.ARRAY(Sequelize.STRING),
-            },
-            tags: {
-                type: Sequelize.ARRAY(Sequelize.STRING),
-            },
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
+      tags: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
+      createdBy: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "user",
+          key: "id",
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
