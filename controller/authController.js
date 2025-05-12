@@ -137,4 +137,4 @@ const restrictTo = (...userType) => {
 
     return checkPermission;
 };
-module.exports = { signup, login };
+module.exports = { signup, login, authentication, restrictTo };
