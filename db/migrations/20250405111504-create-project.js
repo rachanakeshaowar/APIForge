@@ -64,3 +64,5 @@ module.exports = {
     await queryInterface.dropTable("projects");
   },
 };
+
+
