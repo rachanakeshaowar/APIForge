@@ -31,59 +31,72 @@ const signup = catchAsync(async (req, res, next) => {
     if (!newUser) {
         return next(new AppError('Failed to create the user', 400));
     }
-const result = newUser.toJSON();
-
-    delete result.password;
-    delete result.deletedAt;
-
-    result.token = generateToken({
-        id: result.id,
+  if (body.password !== body.confirmPassword) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Passwords do not match',
     });
-
-    return res.status(201).json({
-        status: 'success',
-        data: result,
-    });
-});
-
-// 🔐 Login Function (Now outside the signup)
-const login = catchAsync (async (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next (new AppError('Please provide email and password',400)); 
-  }
-  const result = await user.findOne({where:{email}});
-  if(!result || !(await bcrypt.compare(password,result.password))){
-    return next(new AppError('Incorrect email or password',401));
   }
 
   try {
-    const foundUser = await user.findOne({ where: { email } });
+    const hashedPassword = await bcrypt.hash(body.password, 12);
 
-    if (!foundUser || !(await bcrypt.compare(password, foundUser.password))) {
-    
-      return res.status(401).json({
-        status: 'fail',
-        message: 'Incorrect email or password',
-      });
+    const newUser = await user.create({
+      userType: body.userType,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+      password: hashedPassword,
+    });
+
+    if(!newUser){
+      return next(new AppError('Failed to create the user',400));
+      
     }
+    const result = newUser.toJSON();
+  
+    delete result.password;
+    delete result.deleteAt;
 
-    const token = generateToken({ id: foundUser.id });
+    result.token = generateToken({ 
+      id: result.id });
 
-    return res.status(200).json({
+    return res.status(201).json({
       status: 'success',
-      token,
+      data: result,
     });
 
   } catch (err) {
-    console.error('Login Error:', err);
+    console.error('Signup Error:', err);
     return res.status(500).json({
       status: 'error',
       message: 'Internal server error',
       error: err.message,
     });
   }
+});
+
+// 🔐 Login Function (Now outside the signup)
+const login = catchAsync(async (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return next(new AppError('Please provide email and password', 400));
+    }
+
+    const result = await user.findOne({ where: { email } });
+    if (!result || !(await bcrypt.compare(password, result.password))) {
+        return next(new AppError('Incorrect email or password', 401));
+    }
+
+    const token = generateToken({
+        id: result.id,
+    });
+
+    return res.json({
+        status: 'success',
+        token,
+    });
 });
 
 module.exports = { signup, login };
