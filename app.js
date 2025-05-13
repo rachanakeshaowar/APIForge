@@ -4,6 +4,8 @@ const authRouter = require('./routes/authRoutes');
 const projectRouter = require('./routes/projectRoute');
 const userRouter = require('./route/userRoute');
 const catchAsync = require('./utils/catchAsync');
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controller/errorController');
 
 
 const catchAsync = require('./utils/catchAsync');
