@@ -2,6 +2,8 @@ require('dotenv').config({path:`${process.cwd()}/.env`});
 const express = require('express');
 const authRouter = require('./routes/authRoutes'); 
 const projectRouter = require('./routes/projectRoute');
+const userRouter = require('./route/userRoute');
+const catchAsync = require('./utils/catchAsync');
 
 
 const catchAsync = require('./utils/catchAsync');
