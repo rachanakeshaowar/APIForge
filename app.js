@@ -8,9 +8,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
 
 
-const catchAsync = require('./utils/catchAsync');
-const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controller/errorController');
+
 const app = express();
 app.use(express.json());
 
