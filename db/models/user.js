@@ -111,4 +111,10 @@ module.exports = sequelize.define('user', {
   freezeTableName: true,
   modelName: 'user',
 });
+user.hasMany(project, { foreignKey: 'createdBy' });
+project.belongsTo(user, {
+    foreignKey: 'createdBy',
+});
+
+module.exports = user;
 
