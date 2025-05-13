@@ -1,5 +1,5 @@
 const { authentication, restrictTo } = require('../controller/authController');
-const { createProject   getAllProject,
+const { createProject  , getAllProject,
     getProjectById,
     updateProject,
     deleteProject, } = require('../controller/projectController');
